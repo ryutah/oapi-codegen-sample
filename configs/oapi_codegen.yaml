@@ -1,0 +1,9 @@
+# ファイルの出力先
+output: presentation/rest/oapi/oapi.gen.go
+# パッケージ名
+package: oapi
+# 生成するコードの種類
+generate:
+  - chi-server
+  - types
+  - spec
