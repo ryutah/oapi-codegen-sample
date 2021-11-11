@@ -13,10 +13,9 @@ import (
 	oapimiddleware "github.com/deepmap/oapi-codegen/pkg/chi-middleware"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
-	"github.com/ryutah/oapi-codegen-sample/infrastructure/fake"
+	"github.com/ryutah/oapi-codegen-sample/interactor"
 	"github.com/ryutah/oapi-codegen-sample/presentation/rest"
 	"github.com/ryutah/oapi-codegen-sample/presentation/rest/oapi"
-	"github.com/ryutah/oapi-codegen-sample/usecase"
 )
 
 func main() {
@@ -32,9 +31,7 @@ func main() {
 	r.Use(middleware.StripSlashes)
 
 	// NOTE(ryutah): wireのような DIライブラリ使うのが望ましい
-	hello := usecase.NewHello(fake.NewHelloRepository())
-
-	if err := serve(oapi.HandlerWithOptions(rest.NewServer(hello), oapi.ChiServerOptions{
+	if err := serve(oapi.HandlerWithOptions(interactor.InjectServer(), oapi.ChiServerOptions{
 		BaseRouter:       r,
 		ErrorHandlerFunc: rest.ErrorHandlerFunc,
 	})); err != nil {
